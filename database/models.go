@@ -25,6 +25,5 @@ type (
 		CoverUrl    string
 		Currency    string
 		CatalogID   int
-		CategoryID  int
 	}
 )

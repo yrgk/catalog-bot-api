@@ -11,12 +11,13 @@ type (
 		message string
 	}
 
-	CatalogsResponse struct {
+	CatalogResponse struct {
 		Title    string
 		CoverUrl string
+		ShopID   int
 	}
 
-	ItemsReposne struct {
+	ItemReponse struct {
 		Title    string
 		Price    int
 		CoverUrl string

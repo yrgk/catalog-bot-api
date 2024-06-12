@@ -4,18 +4,27 @@ import (
 	"gorm.io/gorm"
 )
 
-type Catalog struct {
-	gorm.Model
-	Title          string
-	UserTelegramID int
-}
+type (
+	Shop struct {
+		gorm.Model
+		Title          string
+		TelegramUserID int
+	}
+	Catalog struct {
+		gorm.Model
+		Title    string
+		CoverUrl string
+		ShopID   int
+	}
 
-type CatalogItem struct {
-	gorm.Model
-	Title       string
-	Description string
-	Price       int
-	Currency    string
-	CatalogID   int
-	CategoryID  int
-}
+	CatalogItem struct {
+		gorm.Model
+		Title       string
+		Description string
+		Price       int
+		CoverUrl    string
+		Currency    string
+		CatalogID   int
+		CategoryID  int
+	}
+)

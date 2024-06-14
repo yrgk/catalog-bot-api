@@ -10,6 +10,7 @@ type (
 		Title          string
 		TelegramUserID int
 	}
+	
 	Catalog struct {
 		gorm.Model
 		Title    string

@@ -1,6 +1,8 @@
 package database
 
 import (
+	"catalog-bot-api/structs"
+
 	"gorm.io/gorm"
 )
 
@@ -12,11 +14,18 @@ func Migrate(db *gorm.DB) {
 	)
 }
 
-// func GetAllItems(db *gorm.DB) [] {
-// 	var catalogItems []CatalogItem
+func GetAllItems(db *gorm.DB, catalogID int) ([]structs.CatalogItemReponse, error) {
+	var catalogItems []structs.CatalogItemReponse
+	// err := db.Model(&CatalogItem{}).Find(&catalogItems)
+	// err := db.Where("catalog_id = ?", catalogID).Find(&structs.CatalogItemReponse{})
+	err := db.Where("catalog_id = ?", catalogID).Find(&structs.CatalogItemReponse{})
+	if err != nil {
+		return nil, err.Error
+	}
 
-// 	db.Where()
-// }
+	return catalogItems, nil
+}
+
 func GetAllCatalogs(db *gorm.DB, shopID int) ([]Catalog, error) {
 	var catalogs []Catalog
 	err := db.Where("shop_id = ?", shopID).Find(&catalogs)

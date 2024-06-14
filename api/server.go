@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 
 	"catalog-bot-api/database"
+	"catalog-bot-api/structs"
 )
 
 func RunServer(db *gorm.DB) {
@@ -15,19 +16,52 @@ func RunServer(db *gorm.DB) {
 	// catalog := app.Group("/catalog")
 
 	// Fetching all catalogs in one shop
-	app.Get(":shopID/catalogs", func(c *fiber.Ctx) error {
+	app.Get(":shopID/catalog/all", func(c *fiber.Ctx) error {
 		shopID, err := strconv.Atoi(c.Params("shopID"))
 		if err != nil {
-			return c.JSON(BadResponse{
-				false,
-				"incorrect shop id",
+			return c.JSON(structs.SimpleResponse{
+				IsOk: false,
+				Message: "invalid shop id",
+				StatusCode: 404,
 			})
 		}
 		catalogs, err := database.GetAllCatalogs(db, shopID)
 		if err != nil {
-			return c.JSON(BadResponse{
-				false,
-				"not found",
+			return c.JSON(structs.SimpleResponse{
+				IsOk: false,
+				Message: "not found",
+				StatusCode: 404,
+			})
+		}
+
+		return c.JSON(catalogs)
+	})
+
+	app.Get("/catalog/:CatalogID", func(c *fiber.Ctx) error {
+		// shopID, err := strconv.Atoi(c.Params("shopID"))
+		// if err != nil {
+		// 	return c.JSON(structs.SimpleResponse{
+		// 		IsOk: false,
+		// 		Message: "invalid shop id",
+		// 		StatusCode: 404,
+		// 	})
+		// }
+
+		catalogID, err := strconv.Atoi(c.Params("catalogID"))
+		if err != nil {
+			return c.JSON(structs.SimpleResponse{
+				IsOk: false,
+				Message: "invalid catalog id",
+				StatusCode: 404,
+			})
+		}
+
+		catalogs, err := database.GetAllItems(db, catalogID)
+		if err != nil {
+			return c.JSON(structs.SimpleResponse{
+				IsOk: false,
+				Message: "not found",
+				StatusCode: 404,
 			})
 		}
 

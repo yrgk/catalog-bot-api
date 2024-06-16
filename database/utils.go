@@ -16,6 +16,8 @@ func Migrate(db *gorm.DB) {
 	)
 }
 
+// func GetShopInfo(db *gorm.DB, shopID int)
+
 func GetAllItems(db *gorm.DB, catalogID int) []structs.CatalogItemResponse {
 	var catalogItems []structs.CatalogItemResponse
 	db.Model(&CatalogItem{}).Where("catalog_id = ?", catalogID).Find(&structs.CatalogItemResponse{}).Find(&catalogItems)

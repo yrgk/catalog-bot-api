@@ -16,31 +16,25 @@ func Migrate(db *gorm.DB) {
 	)
 }
 
-func GetAllItems(db *gorm.DB, catalogID int) ([]structs.CatalogItemReponse, error) {
-	var catalogItems []structs.CatalogItemReponse
-	result := db.Model(&CatalogItem{}).Where("catalog_id = ?", catalogID).Find(&structs.CatalogItemReponse{}).Find(&catalogItems)
-	if result.Error != nil {
-		return nil, result.Error
-	}
+func GetAllItems(db *gorm.DB, catalogID int) []structs.CatalogItemResponse {
+	var catalogItems []structs.CatalogItemResponse
+	db.Model(&CatalogItem{}).Where("catalog_id = ?", catalogID).Find(&structs.CatalogItemResponse{}).Find(&catalogItems)
 
-	return catalogItems, nil
+	return catalogItems
 }
 
-func GetAllCatalogs(db *gorm.DB, shopID int) ([]Catalog, error) {
-	var catalogs []Catalog
-	// err := db.Where("shop_id = ?", shopID).Find(&catalogs)
-	db.Where("shop_id = ?", shopID).Find(&catalogs)
-	// if err != nil {
-	// 	return nil, err.Error
-	// }
+func GetAllCatalogs(db *gorm.DB, shopID int) []structs.CatalogResponse {
+// func GetAllCatalogs(db *gorm.DB, shopID int) []Catalog {
+	// var catalogs []Catalog
+	var catalogs []structs.CatalogResponse
+	db.Model(&Catalog{}).Where("shop_id = ?", shopID).Find(&structs.CatalogResponse{}).Find(&catalogs)
 
-	return catalogs, nil
+	return catalogs
 }
 
-func GetOneItem(db *gorm.DB, id int) CatalogItem {
-	var catalogItem CatalogItem
-
-	db.Find(&catalogItem, id)
+func GetOneItem(db *gorm.DB, itemID int) structs.OneCatalogItemResponse {
+	var catalogItem structs.OneCatalogItemResponse
+	db.Model(&CatalogItem{}).Where("id = ?", itemID).Find(&structs.OneCatalogItemResponse{}).Find(&catalogItem)
 
 	return catalogItem
 }

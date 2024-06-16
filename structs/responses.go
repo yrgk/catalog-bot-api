@@ -7,25 +7,26 @@ type (
 		StatusCode int    `json:"status_code"`
 	}
 
-	// CatalogResponse struct {
-	// 	Title    string
-	// 	CoverUrl string
-	// 	ShopID   int
-	// }
+	CatalogResponse struct {
+		ID       uint   `json:"id"`
+		Title    string `json:"title"`
+		CoverUrl string `json:"cover_url"`
+	}
 
-	CatalogItemReponse struct {
-		Title    string
-		Price    int
-		CoverUrl string
-		Currency string
+	CatalogItemResponse struct {
+		ID       uint   `json:"id"`
+		Title    string `json:"title"`
+		Price    int    `json:"price"`
+		CoverUrl string `json:"cover_url"`
+		Currency string `json:"currency"`
 	}
 
 	OneCatalogItemResponse struct {
-		Title       string
-		Description string
-		Price       int
-		CoverUrl    string
-		Currency    string
-		CatalogID   int
+		Title       string `json:"title"`
+		Price       int    `json:"price"`
+		Description string `json:"description"`
+		CoverUrl    string `json:"cover_url"`
+		Currency    string `json:"currency"`
+		CatalogID   int    `json:"catalog_id"`
 	}
 )

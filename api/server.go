@@ -13,8 +13,10 @@ import (
 func RunServer(db *gorm.DB) {
 	app := fiber.New()
 
-	// catalog := app.Group("/catalog")
+	catalog := app.Group("/catalog")
+	item := app.Group("/item")
 
+	// Fetching info about the shop
 	// Fetching all catalogs in one shop
 	app.Get(":shopID/catalog/all", func(c *fiber.Ctx) error {
 		shopID, err := strconv.Atoi(c.Params("shopID"))
@@ -25,28 +27,13 @@ func RunServer(db *gorm.DB) {
 				StatusCode: 404,
 			})
 		}
-		catalogs, err := database.GetAllCatalogs(db, shopID)
-		if err != nil {
-			return c.JSON(structs.SimpleResponse{
-				IsOk: false,
-				Message: "not found",
-				StatusCode: 404,
-			})
-		}
+		catalogs := database.GetAllCatalogs(db, shopID)
 
 		return c.JSON(catalogs)
 	})
 
-	app.Get("/catalog/:CatalogID", func(c *fiber.Ctx) error {
-		// shopID, err := strconv.Atoi(c.Params("shopID"))
-		// if err != nil {
-		// 	return c.JSON(structs.SimpleResponse{
-		// 		IsOk: false,
-		// 		Message: "invalid shop id",
-		// 		StatusCode: 404,
-		// 	})
-		// }
-
+	// Fetching all items in one shop
+	catalog.Get("/:catalogID", func(c *fiber.Ctx) error {
 		catalogID, err := strconv.Atoi(c.Params("catalogID"))
 		if err != nil {
 			return c.JSON(structs.SimpleResponse{
@@ -55,45 +42,25 @@ func RunServer(db *gorm.DB) {
 				StatusCode: 404,
 			})
 		}
-
-		catalogs, err := database.GetAllItems(db, catalogID)
-		if err != nil {
-			return c.JSON(structs.SimpleResponse{
-				IsOk: false,
-				Message: "not found",
-				StatusCode: 404,
-			})
-		}
+		catalogs := database.GetAllItems(db, catalogID)
 
 		return c.JSON(catalogs)
 	})
 
 	// Fetching one item from catalog
-	// catalog.Get("/:id", func(c *fiber.Ctx) error {
-	// 	id, err := strconv.Atoi(c.Params("id"))
-	// 	if err != nil {
-	// 		return c.JSON(BadResponse{
-	// 			false,
-	// 			"incorect id",
-	// 		})
-	// 	}
-	// 	item := database.GetOneItem(db, id)
+	item.Get("/:itemID", func(c *fiber.Ctx) error {
+		itemID, err := strconv.Atoi(c.Params("itemID"))
+		if err != nil {
+			return c.JSON(structs.SimpleResponse{
+				IsOk: false,
+				Message: "invalid item id",
+				StatusCode: 404,
+			})
+		}
+		item := database.GetOneItem(db, itemID)
 
-	// 	return c.JSON(item)
-	// })
-
-	// catalog.Get("/:id", func(c *fiber.Ctx) error {
-	// 	id, err := strconv.Atoi(c.Params("id"))
-	// 	if err != nil {
-	// 		return c.JSON(BadResponse{
-	// 			false,
-	// 			"incorect id",
-	// 		})
-	// 	}
-	// 	item := database.GetOneItem(db, id)
-
-	// 	return c.JSON(item)
-	// })
+		return c.JSON(item)
+	})
 
 	// catalog.Post("/", func(c *fiber.Ctx) error {
 

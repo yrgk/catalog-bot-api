@@ -7,12 +7,6 @@ type (
 		StatusCode int    `json:"status_code"`
 	}
 
-	CatalogResponse struct {
-		ID       uint   `json:"id"`
-		Title    string `json:"title"`
-		CoverUrl string `json:"cover_url"`
-	}
-
 	CatalogItemResponse struct {
 		ID       uint   `json:"id"`
 		Title    string `json:"title"`

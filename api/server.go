@@ -13,7 +13,7 @@ import (
 func RunServer(db *gorm.DB) {
 	app := fiber.New()
 
-	shop := app.Group("/shop")
+	// shop := app.Group("/shop")
 	catalog := app.Group("/catalog")
 	item := app.Group("/item")
 
@@ -32,24 +32,9 @@ func RunServer(db *gorm.DB) {
 	// 	return c.JSON(catalogs)
 	// })
 
-	// Fetching all catalogs in one shop
-	shop.Get("/:shopID/catalog/all", func(c *fiber.Ctx) error {
-		shopID, err := strconv.Atoi(c.Params("shopID"))
-		if err != nil {
-			return c.JSON(structs.SimpleResponse{
-				IsOk: false,
-				Message: "invalid shop id",
-				StatusCode: 404,
-			})
-		}
-		catalogs := database.GetAllCatalogs(db, shopID)
-
-		return c.JSON(catalogs)
-	})
-
 	// Fetching all items in one shop
-	catalog.Get("/:catalogID", func(c *fiber.Ctx) error {
-		catalogID, err := strconv.Atoi(c.Params("catalogID"))
+	catalog.Get("/:shopID", func(c *fiber.Ctx) error {
+		shopID, err := strconv.Atoi(c.Params("shopID"))
 		if err != nil {
 			return c.JSON(structs.SimpleResponse{
 				IsOk: false,
@@ -57,7 +42,7 @@ func RunServer(db *gorm.DB) {
 				StatusCode: 404,
 			})
 		}
-		catalogs := database.GetAllItems(db, catalogID)
+		catalogs := database.GetAllItems(db, shopID)
 
 		return c.JSON(catalogs)
 	})

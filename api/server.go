@@ -1,7 +1,9 @@
 package api
 
 import (
+	"log"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -34,7 +36,7 @@ func RunServer(db *gorm.DB) {
 
 	// Fetching all items in one shop
 	catalog.Get("/:shopID", func(c *fiber.Ctx) error {
-		shopID, err := strconv.Atoi(c.Params("shopID"))
+		shopID, err := c.ParamsInt("shopID")
 		if err != nil {
 			return c.JSON(structs.SimpleResponse{
 				IsOk: false,
@@ -49,7 +51,7 @@ func RunServer(db *gorm.DB) {
 
 	// Fetching one item from catalog
 	item.Get("/:itemID", func(c *fiber.Ctx) error {
-		itemID, err := strconv.Atoi(c.Params("itemID"))
+		itemID, err := c.ParamsInt("itemID")
 		if err != nil {
 			return c.JSON(structs.SimpleResponse{
 				IsOk: false,
@@ -62,9 +64,28 @@ func RunServer(db *gorm.DB) {
 		return c.JSON(item)
 	})
 
-	// catalog.Post("/", func(c *fiber.Ctx) error {
+	item.Post("/", func(c *fiber.Ctx) error {
+		payload := new(structs.CatalogItemRequest)
 
-	// })
+		if err := c.BodyParser(payload); err != nil {
+			log.Println(err)
+			return err
+		}
+
+		log.Println(payload.Title)
+
+		newItem := database.CatalogItem{
+			CreatedAt: time.Now(),
+			Title: payload.Title,
+			Description: payload.Description,
+			Price: payload.Price,
+			CoverUrl: payload.CoverUrl,
+			Currency: payload.Currency,
+			ShopID: 1,
+		}
+
+		return c.Status(fiber.StatusOK).JSON(newItem)
+	})
 
 	app.Listen(":8080")
 }

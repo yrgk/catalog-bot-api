@@ -17,7 +17,7 @@ type (
 		CreatedAt   time.Time `json:"created_at"`
 		Title       string    `json:"title"`
 		Description string    `json:"description"`
-		Price       int       `json:"price"`
+		Price       float32       `json:"price"`
 		CoverUrl    string    `json:"cover_url"`
 		Currency    string    `json:"currency"`
 		ShopID      int       `json:"shop_id"`

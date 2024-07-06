@@ -2,7 +2,6 @@ package api
 
 import (
 	"log"
-	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -37,16 +36,18 @@ func RunServer(db *gorm.DB) {
 	// Fetching all items in one shop
 	catalog.Get("/:shopID", func(c *fiber.Ctx) error {
 		shopID, err := c.ParamsInt("shopID")
+		log.Println(shopID)
 		if err != nil {
-			return c.JSON(structs.SimpleResponse{
-				IsOk: false,
-				Message: "invalid catalog id",
-				StatusCode: 404,
-			})
+			var result []structs.CatalogItemResponse
+			return c.Status(fiber.StatusNotFound).JSON(result)
 		}
 		catalogs := database.GetAllItems(db, shopID)
+		if len(catalogs) == 0 {
+			return c.Status(fiber.StatusNotFound).JSON(catalogs)
+		}
+		return c.Status(fiber.StatusOK).JSON(catalogs)
 
-		return c.JSON(catalogs)
+
 	})
 
 	// Fetching one item from catalog
@@ -68,7 +69,6 @@ func RunServer(db *gorm.DB) {
 		payload := new(structs.CatalogItemRequest)
 
 		if err := c.BodyParser(payload); err != nil {
-			log.Println(err)
 			return err
 		}
 

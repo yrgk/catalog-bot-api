@@ -10,14 +10,14 @@ type (
 	CatalogItemResponse struct {
 		ID       uint   `json:"id"`
 		Title    string `json:"title"`
-		Price    int    `json:"price"`
+		Price    float32    `json:"price"`
 		CoverUrl string `json:"cover_url"`
 		Currency string `json:"currency"`
 	}
 
 	OneCatalogItemResponse struct {
 		Title       string `json:"title"`
-		Price       int    `json:"price"`
+		Price       float32    `json:"price"`
 		Description string `json:"description"`
 		CoverUrl    string `json:"cover_url"`
 		Currency    string `json:"currency"`

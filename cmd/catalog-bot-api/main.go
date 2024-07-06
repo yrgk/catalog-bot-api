@@ -7,6 +7,11 @@ import (
 
 func main() {
 	db := database.GetDb()
-	// database.Migrate(db)
+	database.Migrate(db)
 	api.RunServer(db)
 }
+
+/*
+	POST:
+		create one catalog
+*/

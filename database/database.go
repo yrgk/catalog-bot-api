@@ -11,8 +11,8 @@ import (
 )
 
 func GetDb() *gorm.DB {
-	// if err := godotenv.Load("../../.env"); err != nil {
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("../../.env"); err != nil {
+	// if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")
 	}
 

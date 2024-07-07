@@ -8,19 +8,20 @@ type (
 	}
 
 	CatalogItemResponse struct {
-		ID       uint   `json:"id"`
-		Title    string `json:"title"`
-		Price    float32    `json:"price"`
-		CoverUrl string `json:"cover_url"`
-		Currency string `json:"currency"`
+		ID       uint    `json:"id"`
+		Title    string  `json:"title"`
+		Price    float32 `json:"price"`
+		CoverUrl string  `json:"cover_url"`
+		Currency string  `json:"currency"`
 	}
 
 	OneCatalogItemResponse struct {
-		Title       string `json:"title"`
-		Price       float32    `json:"price"`
-		Description string `json:"description"`
-		CoverUrl    string `json:"cover_url"`
-		Currency    string `json:"currency"`
-		CatalogID   int    `json:"catalog_id"`
+		ID          uint    `json:"id"`
+		Title       string  `json:"title"`
+		Price       float32 `json:"price"`
+		Description string  `json:"description"`
+		CoverUrl    string  `json:"cover_url"`
+		Currency    string  `json:"currency"`
+		ShopID      int     `json:"shop_id"`
 	}
 )

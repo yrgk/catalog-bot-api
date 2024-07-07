@@ -24,6 +24,13 @@ func GetAllItems(db *gorm.DB, shopID int) []structs.CatalogItemResponse {
 	return catalogItems
 }
 
+// func GetAllItems(db *gorm.DB, shopID int) []structs.OneCatalogItemResponse {
+// 	var catalogItems []structs.OneCatalogItemResponse
+// 	db.Model(&CatalogItem{}).Where("shop_id = ?", shopID).Find(&structs.OneCatalogItemResponse{}).Find(&catalogItems)
+
+// 	return catalogItems
+// }
+
 func GetOneItem(db *gorm.DB, itemID int) structs.OneCatalogItemResponse {
 	var catalogItem structs.OneCatalogItemResponse
 	db.Model(&CatalogItem{}).Where("id = ?", itemID).Find(&structs.OneCatalogItemResponse{}).Find(&catalogItem)

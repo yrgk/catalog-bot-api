@@ -62,7 +62,7 @@ func RunServer(db *gorm.DB) {
 		}
 		item := database.GetOneItem(db, itemID)
 
-		return c.JSON(item)
+		return c.Status(fiber.StatusOK).JSON(item)
 	})
 
 	item.Post("/", func(c *fiber.Ctx) error {

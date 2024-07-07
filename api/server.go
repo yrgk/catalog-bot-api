@@ -29,7 +29,7 @@ func RunServer(db *gorm.DB) {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-        AllowOrigins: "http://localhost:5173",
+        AllowOrigins: "*",
         AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
     }))
 

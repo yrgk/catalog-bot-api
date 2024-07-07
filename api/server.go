@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"gorm.io/gorm"
 
 	"catalog-bot-api/database"
@@ -13,6 +14,11 @@ import (
 
 func RunServer(db *gorm.DB) {
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+        AllowOrigins: "http://localhost:5173",
+        AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+    }))
 
 	// shop := app.Group("/shop")
 	catalog := app.Group("/catalog")
@@ -38,16 +44,20 @@ func RunServer(db *gorm.DB) {
 		shopID, err := c.ParamsInt("shopID")
 		log.Println(shopID)
 		if err != nil {
-			var result []structs.CatalogItemResponse
+			var result []structs.CatalogResponse
 			return c.Status(fiber.StatusNotFound).JSON(result)
 		}
 		catalogs := database.GetAllItems(db, shopID)
 		if len(catalogs) == 0 {
 			return c.Status(fiber.StatusNotFound).JSON(catalogs)
 		}
-		return c.Status(fiber.StatusOK).JSON(catalogs)
+		shopTitle := database.GetShopTitle(db, shopID)
+		result := structs.CatalogResponse{
+			ShopTitle: shopTitle,
+			Items: catalogs,
+		}
 
-
+		return c.Status(fiber.StatusOK).JSON(result)
 	})
 
 	// Fetching one item from catalog

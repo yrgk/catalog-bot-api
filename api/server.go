@@ -1,7 +1,10 @@
 package api
 
 import (
+	"fmt"
 	"log"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,6 +16,16 @@ import (
 )
 
 func RunServer(db *gorm.DB) {
+	var PORT int
+	strPort := os.Getenv("PORT")
+	if strPort == "" {
+		PORT = 8080
+	} else {
+		PORT, _ = strconv.Atoi(strPort)
+	}
+
+
+
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
@@ -97,5 +110,5 @@ func RunServer(db *gorm.DB) {
 		return c.Status(fiber.StatusOK).JSON(newItem)
 	})
 
-	app.Listen(":8080")
+	app.Listen(fmt.Sprintf(":%d", PORT))
 }

@@ -15,14 +15,23 @@ func Migrate(db *gorm.DB) {
 	)
 }
 
-// func GetShopInfo(db *gorm.DB, shopID int)
+// CRUD operations
 
-// func GetAllItems(db *gorm.DB, shopID int) []structs.CatalogItemResponse {
-// 	var catalogItems []structs.CatalogItemResponse
-// 	db.Model(&CatalogItem{}).Where("shop_id = ?", shopID).Find(&structs.CatalogItemResponse{}).Find(&catalogItems)
+func CreateShop(db *gorm.DB, data Shop) error {
+	result := db.Create(&data)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
 
-// 	return catalogItems
-// }
+func CreateItem(db *gorm.DB, data CatalogItem) error {
+	result := db.Create(&data)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
 
 func GetAllItems(db *gorm.DB, shopID int) []structs.CatalogItemResponse {
 	var catalogItems []structs.CatalogItemResponse

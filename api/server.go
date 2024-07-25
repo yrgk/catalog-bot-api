@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -16,15 +15,11 @@ import (
 )
 
 func RunServer(db *gorm.DB) {
-	var PORT int
+	var PORT string
 	strPort := os.Getenv("PORT")
 	if strPort == "" {
-		PORT = 8080
-	} else {
-		PORT, _ = strconv.Atoi(strPort)
+		PORT = "8080"
 	}
-
-
 
 	app := fiber.New()
 
@@ -33,24 +28,32 @@ func RunServer(db *gorm.DB) {
         AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
     }))
 
-	// shop := app.Group("/shop")
+	shop := app.Group("/shop")
 	catalog := app.Group("/catalog")
 	item := app.Group("/item")
 
-	// Fetching info about the shop
-	// shop.Get("/:shopID/info", func(c *fiber.Ctx) error {
-	// 	shopID, err := strconv.Atoi(c.Params("shopID"))
-	// 	if err != nil {
-	// 		return c.JSON(structs.SimpleResponse{
-	// 			IsOk: false,
-	// 			Message: "invalid shop id",
-	// 			StatusCode: 404,
-	// 		})
-	// 	}
-	// 	catalogs := database.GetAllCatalogs(db, shopID)
+	// Creating the shop
+	shop.Post("/new", func(c *fiber.Ctx) error {
+		payload := new(structs.ShopCreateRequest)
 
-	// 	return c.JSON(catalogs)
-	// })
+		if err := c.BodyParser(payload); err != nil {
+			return err
+		}
+
+		// TODO: Add payment checking
+
+		newShop := database.Shop{
+			CreatedAt: time.Now(),
+			Title: payload.Title,
+			TelegramUserID: payload.TelegramUserID,
+		}
+
+		if err := database.CreateShop(db, newShop); err != nil {
+			return c.SendStatus(fiber.StatusBadRequest)
+		}
+
+		return c.JSON(newShop)
+	})
 
 	// Fetching all items in one shop
 	catalog.Get("/:shopID", func(c *fiber.Ctx) error {
@@ -77,25 +80,19 @@ func RunServer(db *gorm.DB) {
 	item.Get("/:itemID", func(c *fiber.Ctx) error {
 		itemID, err := c.ParamsInt("itemID")
 		if err != nil {
-			return c.JSON(structs.SimpleResponse{
-				IsOk: false,
-				Message: "invalid item id",
-				StatusCode: 404,
-			})
+			return c.SendStatus(fiber.StatusNotFound)
 		}
 		item := database.GetOneItem(db, itemID)
 
-		return c.Status(fiber.StatusOK).JSON(item)
+		return c.JSON(item)
 	})
 
-	item.Post("/", func(c *fiber.Ctx) error {
+	item.Post("/new", func(c *fiber.Ctx) error {
 		payload := new(structs.CatalogItemRequest)
 
 		if err := c.BodyParser(payload); err != nil {
 			return err
 		}
-
-		log.Println(payload.Title)
 
 		newItem := database.CatalogItem{
 			CreatedAt: time.Now(),
@@ -104,11 +101,15 @@ func RunServer(db *gorm.DB) {
 			Price: payload.Price,
 			CoverUrl: payload.CoverUrl,
 			Currency: payload.Currency,
-			ShopID: 1,
+			ShopID: payload.ShopID,
 		}
 
-		return c.Status(fiber.StatusOK).JSON(newItem)
+		if err := database.CreateItem(db, newItem); err != nil {
+			return c.SendStatus(fiber.StatusBadRequest)
+		}
+
+		return c.SendStatus(fiber.StatusOK)
 	})
 
-	app.Listen(fmt.Sprintf(":%d", PORT))
+	app.Listen(fmt.Sprintf(":%s", PORT))
 }

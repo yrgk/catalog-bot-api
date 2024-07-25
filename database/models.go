@@ -7,19 +7,19 @@ import (
 type (
 	Shop struct {
 		ID             uint      `gorm:"primarykey"`
-		CreatedAt      time.Time `json:"created_at"`
-		Title          string    `json:"title"`
-		TelegramUserID int       `json:"telegram_user_id"`
+		CreatedAt      time.Time `json:"created_at" gorm:"not null"`
+		Title          string    `json:"title" gorm:"not null; unique"`
+		TelegramUserID int       `json:"telegram_user_id" gorm:"not null"`
 	}
 
 	CatalogItem struct {
 		ID          uint      `gorm:"primarykey"`
-		CreatedAt   time.Time `json:"created_at"`
-		Title       string    `json:"title"`
+		CreatedAt   time.Time `json:"created_at" gorm:"not null"`
+		Title       string    `json:"title" gorm:"not null"`
 		Description string    `json:"description"`
-		Price       float32   `json:"price"`
+		Price       float32   `json:"price" gorm:"not null"`
 		CoverUrl    string    `json:"cover_url"`
-		Currency    string    `json:"currency"`
-		ShopID      int       `json:"shop_id"`
+		Currency    string    `json:"currency" gorm:"not null"`
+		ShopID      int       `json:"shop_id" gorm:"not null"`
 	}
 )

@@ -13,7 +13,7 @@ type Config struct {
 }
 
 func GetConfig() Config {
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("./../../"); err != nil {
 		log.Fatalf(".env file not found: %s", err)
 	}
 

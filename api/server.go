@@ -111,5 +111,6 @@ func RunServer(db *gorm.DB) {
 		return c.SendStatus(fiber.StatusOK)
 	})
 
-	app.Listen(fmt.Sprintf(":%s", PORT))
+	log.Println(PORT)
+	app.Listen(fmt.Sprintf(":%s", "8080"))
 }

@@ -13,8 +13,9 @@ type Config struct {
 }
 
 func GetConfig() Config {
-	if err := godotenv.Load("../../.env"); err != nil {
-		log.Fatalf(".env file not found: %s", err)
+	// if err := godotenv.Load("../../.env"); err != nil {
+	if err := godotenv.Load(); err != nil {
+		log.Printf(".env file not found: %s", err)
 	}
 
 	// Getting values from environment file

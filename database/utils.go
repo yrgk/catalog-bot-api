@@ -25,6 +25,13 @@ func CreateShop(db *gorm.DB, data Shop) error {
 	return nil
 }
 
+func GetMyShops(db *gorm.DB, userId string) []structs.MyShopsResponse {
+	var shops []structs.MyShopsResponse
+	db.Model(&Shop{}).Where("telegram_user_id = ?", userId).Find(&structs.MyShopsResponse{}).Find(&shops)
+
+	return shops
+}
+
 func CreateItem(db *gorm.DB, data CatalogItem) error {
 	result := db.Create(&data)
 	if result.Error != nil {
@@ -40,10 +47,10 @@ func GetAllItems(db *gorm.DB, shopID int) []structs.CatalogItemResponse {
 	return catalogItems
 }
 
-func GetShopTitle(db *gorm.DB, shopID int) string {
-	var shopTitle string
-	db.Raw("SELECT title FROM shops WHERE id = ?", shopID).Scan(&shopTitle)
-	return shopTitle
+func GetShopData(db *gorm.DB, shopID int) structs.ShopData {
+	var shopData structs.ShopData
+	db.Raw("SELECT (title, currency) FROM shops WHERE id = ?", shopID).Scan(&shopData)
+	return shopData
 }
 
 func GetOneItem(db *gorm.DB, itemID int) structs.CatalogItemResponse {

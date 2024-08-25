@@ -12,6 +12,8 @@ type (
 
 	ShopCreateRequest struct {
 		Title          string `json:"title"`
+		Currency       string `json:"currency"`
+		ChannelUrl     string `json:"channel_url"`
 		TelegramUserID int    `json:"telegram_user_id"`
 	}
 )

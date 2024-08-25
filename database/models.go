@@ -6,9 +6,12 @@ import (
 
 type (
 	Shop struct {
-		ID             uint      `gorm:"primarykey"`
+		ID             uint      `json:"id" gorm:"primarykey"`
 		CreatedAt      time.Time `json:"created_at" gorm:"not null"`
 		Title          string    `json:"title" gorm:"not null; unique"`
+		ExpirationDate time.Time `json:"expiration_date"`
+		Currency       string    `json:"currency"`
+		ChannelUrl     string    `json:"channel_url"`
 		TelegramUserID int       `json:"telegram_user_id" gorm:"not null"`
 	}
 
@@ -19,7 +22,7 @@ type (
 		Description string    `json:"description"`
 		Price       float32   `json:"price" gorm:"not null"`
 		CoverUrl    string    `json:"cover_url"`
-		Currency    string    `json:"currency" gorm:"not null"`
-		ShopID      int       `json:"shop_id" gorm:"not null"`
+		// Currency    string    `json:"currency" gorm:"not null"`
+		ShopID int `json:"shop_id" gorm:"not null"`
 	}
 )

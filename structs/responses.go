@@ -37,7 +37,7 @@ type (
 	}
 
 	ShopData struct {
-		ShopTitle string `json:"shop_title"`
+		Title string `json:"shop_title"`
 		Currency  string `json:"currency"`
 	}
 )

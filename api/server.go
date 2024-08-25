@@ -88,7 +88,7 @@ func RunServer(db *gorm.DB) {
 		}
 		shopData := database.GetShopData(db, shopID)
 		result := structs.CatalogResponse{
-			ShopTitle: shopData.ShopTitle,
+			ShopTitle: shopData.Title,
 			Currency: shopData.Currency,
 			Items:     catalogs,
 		}

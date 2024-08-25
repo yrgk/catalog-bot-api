@@ -49,7 +49,7 @@ func GetAllItems(db *gorm.DB, shopID int) []structs.CatalogItemResponse {
 
 func GetShopData(db *gorm.DB, shopID int) structs.ShopData {
 	var shopData structs.ShopData
-	db.Raw("SELECT (title, currency) FROM shops WHERE id = ?", shopID).Scan(&shopData)
+	db.Raw("SELECT title, currency FROM shops WHERE id = ?", shopID).Scan(&shopData)
 	return shopData
 }
 

@@ -132,5 +132,5 @@ func RunServer(db *gorm.DB) {
 	})
 
 	log.Println(PORT)
-	app.Listen(fmt.Sprintf(":%s", "8081"))
+	app.Listen(fmt.Sprintf(":%s", "8080"))
 }

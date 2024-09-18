@@ -22,7 +22,6 @@ type (
 		Description string    `json:"description"`
 		Price       float32   `json:"price" gorm:"not null"`
 		CoverUrl    string    `json:"cover_url"`
-		// Currency    string    `json:"currency" gorm:"not null"`
-		ShopID int `json:"shop_id" gorm:"not null"`
+		ShopID      int       `json:"shop_id" gorm:"not null"`
 	}
 )

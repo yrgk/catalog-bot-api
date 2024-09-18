@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"gorm.io/gorm"
 
@@ -24,12 +23,7 @@ func RunServer(db *gorm.DB) {
 
 	app := fiber.New()
 
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
-	}))
 	app.Use(logger.New())
-
 
 	shop := app.Group("/shop")
 	catalog := app.Group("/catalog")
@@ -43,9 +37,7 @@ func RunServer(db *gorm.DB) {
 			return err
 		}
 
-		// TODO: Add payment checking
-
-		expirationDate := time.Now().Add(time.Hour * 24 * 30)
+		expirationDate := time.Now().AddDate(0, 1, 0)
 
 		newShop := database.Shop{
 			CreatedAt:      time.Now(),
@@ -82,14 +74,16 @@ func RunServer(db *gorm.DB) {
 		if err != nil {
 			return c.SendStatus(fiber.StatusNotFound)
 		}
+
 		catalogs := database.GetAllItems(db, shopID)
 		if len(catalogs) == 0 {
 			return c.SendStatus(fiber.StatusNotFound)
 		}
+
 		shopData := database.GetShopData(db, shopID)
 		result := structs.CatalogResponse{
 			ShopTitle: shopData.Title,
-			Currency: shopData.Currency,
+			Currency:  shopData.Currency,
 			Items:     catalogs,
 		}
 
@@ -111,7 +105,7 @@ func RunServer(db *gorm.DB) {
 		payload := new(structs.CatalogItemRequest)
 
 		if err := c.BodyParser(payload); err != nil {
-			return err
+			return c.SendStatus(fiber.StatusBadRequest)
 		}
 
 		newItem := database.CatalogItem{
@@ -120,7 +114,6 @@ func RunServer(db *gorm.DB) {
 			Description: payload.Description,
 			Price:       payload.Price,
 			CoverUrl:    payload.CoverUrl,
-			// Currency:    payload.Currency,
 			ShopID: payload.ShopID,
 		}
 
@@ -131,6 +124,7 @@ func RunServer(db *gorm.DB) {
 		return c.SendStatus(fiber.StatusOK)
 	})
 
+
 	log.Println(PORT)
-	app.Listen(fmt.Sprintf(":%s", "8080"))
+	app.Listen(fmt.Sprintf(":%s", PORT))
 }

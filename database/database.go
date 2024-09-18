@@ -6,6 +6,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
 func InitDb(config config.Config) *gorm.DB {
 	dsn := config.DSN
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})

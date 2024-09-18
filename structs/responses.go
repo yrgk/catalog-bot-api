@@ -11,10 +11,9 @@ type (
 		ID          uint    `json:"id"`
 		Title       string  `json:"title"`
 		Price       float32 `json:"price"`
+		Currency    string  `json:"currency"`
 		Description string  `json:"description"`
 		CoverUrl    string  `json:"cover_url"`
-		Currency    string  `json:"currency"`
-		// ShopID      int     `json:"shop_id"`
 	}
 
 	CatalogItemResponse struct {
@@ -31,13 +30,12 @@ type (
 	}
 
 	MyShopsResponse struct {
-		ID       uint   `json:"id"`
-		CoverUrl string `json:"cover_url"`
-		Title    string `json:"title" gorm:"not null; unique"`
+		ID    uint   `json:"id"`
+		Title string `json:"title"`
 	}
 
 	ShopData struct {
-		Title string `json:"shop_title"`
-		Currency  string `json:"currency"`
+		Title    string `json:"shop_title"`
+		Currency string `json:"currency"`
 	}
 )

@@ -1,0 +1,113 @@
+package handlers
+
+import (
+	"catalog-bot-api/internal/models"
+	"catalog-bot-api/internal/repository"
+	"time"
+
+	"github.com/gofiber/fiber/v2"
+)
+
+func CreateShopHandler(c *fiber.Ctx) error {
+	payload := new(models.ShopCreateRequest)
+
+	if err := c.BodyParser(payload); err != nil {
+		return err
+	}
+
+	expirationDate := time.Now().AddDate(0, 1, 0)
+
+	newShop := models.Shop{
+		Title:          payload.Title,
+		ExpirationDate: expirationDate,
+		Currency:       payload.Currency,
+		// ChannelUrl:     payload.ChannelUrl,
+		TelegramUserID: payload.TelegramUserID,
+	}
+
+	if err := repository.CreateShop(newShop); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	return c.JSON(newShop)
+}
+
+func GetMyShopsHandler(c *fiber.Ctx) error {
+	userId := c.Query("user_id")
+
+	shops := repository.GetMyShops(userId)
+	if len(shops) == 0 {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	return c.JSON(shops)
+}
+
+func GetCatalogHandler(c *fiber.Ctx) error {
+	shopId, err := c.ParamsInt("shopId")
+	if err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	catalogs := repository.GetItemsInOneShop(shopId)
+	if len(catalogs) == 0 {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	shopData := repository.GetShopData(shopId)
+
+	banners := repository.GetBanners(shopId)
+
+	result := models.CatalogResponse{
+		ShopTitle: shopData.Title,
+		Currency:  shopData.Currency,
+		Banners:   banners,
+		Items:     catalogs,
+	}
+
+	return c.JSON(result)
+}
+
+func GetItemHandler(c *fiber.Ctx) error {
+	itemID, err := c.ParamsInt("itemID")
+	if err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+	item := repository.GetOneItem(itemID)
+
+	return c.JSON(item)
+}
+
+func CreateItemHandler(c *fiber.Ctx) error {
+	body := new(models.CatalogItemRequest)
+
+	if err := c.BodyParser(body); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	newItem := models.CatalogItem{
+		Title:       body.Title,
+		Description: body.Description,
+		Price:       body.Price,
+	}
+
+	if err := repository.CreateItem(newItem); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	return c.SendStatus(fiber.StatusOK)
+}
+
+func GetBannerHandler(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("bannerId")
+	if err != nil {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	banner := repository.GetBannerById(id)
+	if banner.ID == 0 {
+		return c.SendStatus(fiber.StatusNotFound)
+	}
+
+	return c.JSON(banner)
+}

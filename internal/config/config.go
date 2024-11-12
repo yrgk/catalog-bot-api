@@ -7,12 +7,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type Config struct {
+type ConfigStruct struct {
 	DSN  string
 	Port string
 }
 
-func GetConfig() Config {
+var Config ConfigStruct
+
+func GetConfig() {
 	// if err := godotenv.Load("../../.env"); err != nil {
 	if err := godotenv.Load(); err != nil {
 		log.Printf(".env file not found: %s", err)
@@ -22,7 +24,7 @@ func GetConfig() Config {
 	DSN := os.Getenv("DSN")
 	port := os.Getenv("PORT")
 
-	return Config{
+	Config = ConfigStruct{
 		DSN:  DSN,
 		Port: port,
 	}

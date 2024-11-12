@@ -1,4 +1,4 @@
-package structs
+package models
 
 type (
 	SimpleResponse struct {
@@ -26,6 +26,7 @@ type (
 	CatalogResponse struct {
 		ShopTitle string                `json:"shop_title"`
 		Currency  string                `json:"currency"`
+		Banners   []Banner     `json:"banners"`
 		Items     []CatalogItemResponse `json:"items"`
 	}
 

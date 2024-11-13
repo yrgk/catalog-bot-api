@@ -8,8 +8,10 @@ import (
 )
 
 type ConfigStruct struct {
-	DSN  string
-	Port string
+	DSN        string
+	Port       string
+	S3ApiUrl   string
+	BucketName string
 }
 
 var Config ConfigStruct
@@ -23,9 +25,13 @@ func GetConfig() {
 	// Getting values from environment file
 	DSN := os.Getenv("DSN")
 	port := os.Getenv("PORT")
+	S3ApiUrl := os.Getenv("S3_API_URL")
+	BucketName := os.Getenv("BUCKET_NAME")
 
 	Config = ConfigStruct{
 		DSN:  DSN,
 		Port: port,
+		S3ApiUrl: S3ApiUrl,
+		BucketName: BucketName,
 	}
 }

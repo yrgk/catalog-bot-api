@@ -18,5 +18,5 @@ func main() {
 
 	handlers.SetupRoutes(app)
 
-	log.Fatal(app.Listen(fmt.Sprintf(":%s", config.Config.Port)))
+	log.Fatal(app.Listen(fmt.Sprintf("0.0.0.0:%s", config.Config.Port)))
 }

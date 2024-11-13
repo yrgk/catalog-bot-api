@@ -1,13 +1,8 @@
 package models
 
 type (
-	SimpleResponse struct {
-		IsOk       bool   `json:"is_ok"`
-		Message    string `json:"message"`
-		StatusCode int    `json:"status_code"`
-	}
 
-	OneCatalogItemResponse struct {
+	ItemResponse struct {
 		ID          uint    `json:"id"`
 		Title       string  `json:"title"`
 		Price       float32 `json:"price"`
@@ -26,7 +21,7 @@ type (
 	CatalogResponse struct {
 		ShopTitle string                `json:"shop_title"`
 		Currency  string                `json:"currency"`
-		Banners   []Banner     `json:"banners"`
+		Banners   []Banner              `json:"banners"`
 		Items     []CatalogItemResponse `json:"items"`
 	}
 

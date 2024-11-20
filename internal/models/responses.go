@@ -1,14 +1,14 @@
 package models
 
 type (
-
 	ItemResponse struct {
-		ID          uint    `json:"id"`
-		Title       string  `json:"title"`
-		Price       float32 `json:"price"`
-		Currency    string  `json:"currency"`
-		Description string  `json:"description"`
-		CoverUrl    string  `json:"cover_url"`
+		ID            uint    `json:"id"`
+		Title         string  `json:"title"`
+		Price         float32 `json:"price"`
+		DiscountPrice float32 `json:"discount_price"`
+		Currency      string  `json:"currency"`
+		Description   string  `json:"description"`
+		CoverUrl      string  `json:"cover_url"`
 	}
 
 	CatalogItemResponse struct {

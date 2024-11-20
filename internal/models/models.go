@@ -21,7 +21,7 @@ type (
 		Title         string    `json:"title" gorm:"not null"`
 		Description   string    `json:"description"`
 		Price         float32   `json:"price" gorm:"not null"`
-		DiscountPrice float32   `json:"discount"`
+		DiscountPrice float32   `json:"discount_price"`
 		CoverUrl      string    `json:"cover_url"`
 		ShopID        uint      `json:"shop_id" gorm:"not null"`
 	}

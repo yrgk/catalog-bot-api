@@ -15,21 +15,22 @@ func CreateShopHandler(c *fiber.Ctx) error {
 		return err
 	}
 
-	expirationDate := time.Now().AddDate(0, 1, 0)
+	dateNextMonth := time.Now().AddDate(0, 1, 0).Format("2006-01-02 15:04:05")
 
 	newShop := models.Shop{
 		Title:          payload.Title,
-		ExpirationDate: expirationDate,
+		ExpirationDate: dateNextMonth,
 		Currency:       payload.Currency,
 		// ChannelUrl:     payload.ChannelUrl,
 		TelegramUserID: payload.TelegramUserID,
 	}
 
-	if err := repository.CreateShop(newShop); err != nil {
+	response, err := repository.CreateShop(newShop)
+	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	return c.JSON(newShop)
+	return c.JSON(response)
 }
 
 func GetMyShopsHandler(c *fiber.Ctx) error {

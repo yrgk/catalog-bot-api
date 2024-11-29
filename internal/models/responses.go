@@ -34,4 +34,9 @@ type (
 		Title    string `json:"shop_title"`
 		Currency string `json:"currency"`
 	}
+
+	CreateShopResponse struct {
+		Id             int    `json:"id"`
+		ExpirationDate string `json:"expiration_date"`
+	}
 )

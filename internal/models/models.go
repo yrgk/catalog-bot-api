@@ -6,13 +6,12 @@ import (
 
 type (
 	Shop struct {
-		ID             uint      `json:"id" gorm:"primarykey"`
-		CreatedAt      time.Time `json:"created_at" gorm:"not null"`
-		Title          string    `json:"title" gorm:"not null"`
-		ExpirationDate time.Time `json:"expiration_date"`
-		Currency       string    `json:"currency"`
-		ChannelUrl     string    `json:"channel_url"`
-		TelegramUserID int       `json:"telegram_user_id" gorm:"not null"`
+		ID             uint   `json:"id" gorm:"primarykey"`
+		Title          string `json:"title" gorm:"not null"`
+		ExpirationDate string `json:"expiration_date"`
+		Currency       string `json:"currency"`
+		ChannelUrl     string `json:"channel_url"`
+		TelegramUserID int    `json:"telegram_user_id" gorm:"not null"`
 	}
 
 	CatalogItem struct {

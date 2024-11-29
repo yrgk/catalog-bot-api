@@ -6,13 +6,14 @@ import (
 	"fmt"
 )
 
-// TODO: change to native sql
-func CreateShop(shopData models.Shop) error {
-	result := postgres.DB.Create(&shopData)
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
+func CreateShop(shopData models.Shop) (models.CreateShopResponse, error) {
+	var response models.CreateShopResponse
+	query := fmt.Sprintf("INSERT INTO shops (title, currency, telegram_user_id, expiration_date) VALUES ('%s', '%s', '%d', '%s') RETURNING id, expiration_date", shopData.Title, shopData.Currency, shopData.TelegramUserID, shopData.ExpirationDate)
+	postgres.DB.Raw(query).Scan(&response)
+	// if result.Error != nil {
+	// 	return models.CreateShopResponse{}, result.Error
+	// }
+	return response, nil
 }
 
 func GetMyShops(userId string) []models.MyShopsResponse {

@@ -19,8 +19,8 @@ func ConnectDb() {
 
 	db.AutoMigrate(
 		models.Shop{},
-		models.CatalogItem{},
-		models.Banner{},
+		// models.CatalogItem{},
+		// models.Banner{},
 	)
 
 	DB = db

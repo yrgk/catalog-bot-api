@@ -14,7 +14,7 @@ func GetBanners(shopId int) []models.Banner {
 
 func GetBannerById(id int) models.Banner {
 	var banner models.Banner
-	postgres.DB.First(&banner)
+	postgres.DB.First(&banner, id)
 
 	return banner
 }

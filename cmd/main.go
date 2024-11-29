@@ -4,6 +4,7 @@ import (
 	"catalog-bot-api/internal/config"
 	"catalog-bot-api/internal/handlers"
 	"catalog-bot-api/pkg/postgres"
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -22,9 +23,9 @@ func main() {
 
 	handlers.SetupRoutes(app)
 
-	// log.Fatal(app.Listen(fmt.Sprintf("0.0.0.0:%s", config.Config.Port)))
-	err := app.ListenTLS(":443", "/etc/letsencrypt/live/catalogio.space/fullchain.pem", "/etc/letsencrypt/live/catalogio.space/privkey.pem")
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Fatal(app.Listen(fmt.Sprintf(":%s",config.Config.Port)))
+	// err := app.ListenTLS(":443", "/etc/letsencrypt/live/catalogio.space/fullchain.pem", "/etc/letsencrypt/live/catalogio.space/privkey.pem")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 }

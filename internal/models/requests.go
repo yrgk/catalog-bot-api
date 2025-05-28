@@ -17,7 +17,7 @@ type (
 	}
 
 	CreateOrderRequest struct {
-		UserId int
-		Titles []string
+		UserId int      `json:"user_id"`
+		Titles []string `json:"titles"`
 	}
 )

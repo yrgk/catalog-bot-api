@@ -39,7 +39,7 @@ func GetOrder(id int) models.OrderResponse {
 	postgres.DB.Raw("SELECT * FROM orders WHERE id = ?", id).Scan(&order)
 
 	var units []models.Unit
-	postgres.DB.Raw("SELECT title FROM units WHERE order_id = ?", order.ID)
+	postgres.DB.Raw("SELECT title FROM units WHERE order_id = ?", order.ID).Scan(&units)
 
 	response := models.OrderResponse{
 		Order: order,

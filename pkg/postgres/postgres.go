@@ -20,6 +20,7 @@ func ConnectDb() {
 	db.AutoMigrate(
 		models.Shop{},
 		models.Order{},
+		models.Unit{},
 		// models.CatalogItem{},
 		// models.Banner{},
 	)

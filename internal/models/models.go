@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type (
@@ -35,5 +37,11 @@ type (
 	Photo struct {
 		ID       uint   `gorm:"primarykey"`
 		CoverUrl string `json:"cover_url"`
+	}
+
+	Order struct {
+		gorm.Model
+		UserId int
+		Titles []string
 	}
 )

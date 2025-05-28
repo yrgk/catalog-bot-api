@@ -15,4 +15,9 @@ type (
 		ChannelUrl     string `json:"channel_url"`
 		TelegramUserID int    `json:"telegram_user_id"`
 	}
+
+	CreateOrderRequest struct {
+		UserId int
+		Titles []string
+	}
 )

@@ -26,4 +26,7 @@ func SetupRoutes(app *fiber.App) {
 	v1.Get("/catalog/:shopId", GetCatalogHandler)
 	v1.Get("/item/:itemID", GetItemHandler)
 	v1.Get("/banner/:bannerId", GetBannerHandler)
+
+	v1.Post("/order", CreateOrderHandler)
+	v1.Get("/order/:id", GetOrderHandler)
 }

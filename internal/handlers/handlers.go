@@ -112,3 +112,20 @@ func GetBannerHandler(c *fiber.Ctx) error {
 
 	return c.JSON(banner)
 }
+
+func CreateOrderHandler(c *fiber.Ctx) error {
+	var body models.CreateOrderRequest
+	if err := c.BodyParser(&body); err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	if err := repository.CreateOrder(body); err != nil {
+		return c.SendStatus(fiber.StatusConflict)
+	}
+
+	return c.SendStatus(fiber.StatusOK)
+}
+
+func GetOrderHandler(c *fiber.Ctx) error {
+	return c.SendStatus(fiber.StatusOK)
+}

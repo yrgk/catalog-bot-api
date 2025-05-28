@@ -127,5 +127,9 @@ func CreateOrderHandler(c *fiber.Ctx) error {
 }
 
 func GetOrderHandler(c *fiber.Ctx) error {
-	return c.SendStatus(fiber.StatusOK)
+	id, _ := c.ParamsInt("id")
+
+	response := repository.GetOrder(id)
+
+	return c.JSON(response)
 }

@@ -42,6 +42,11 @@ type (
 	Order struct {
 		gorm.Model
 		UserId int
-		Titles []string
+	}
+
+	Unit struct {
+		gorm.Model
+		Title   string
+		OrderId int
 	}
 )

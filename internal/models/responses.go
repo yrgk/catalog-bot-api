@@ -39,4 +39,9 @@ type (
 		Id             int    `json:"id"`
 		ExpirationDate string `json:"expiration_date"`
 	}
+
+	OrderResponse struct {
+		Order Order  `json:"order"`
+		Units []Unit `json:"units"`
+	}
 )

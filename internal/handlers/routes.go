@@ -28,5 +28,6 @@ func SetupRoutes(app *fiber.App) {
 	v1.Get("/banner/:bannerId", GetBannerHandler)
 
 	v1.Post("/order", CreateOrderHandler)
+	v1.Get("/order/list", GetOrdersByUser)
 	v1.Get("/order/:id", GetOrderHandler)
 }

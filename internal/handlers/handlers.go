@@ -3,6 +3,8 @@ package handlers
 import (
 	"catalog-bot-api/internal/models"
 	"catalog-bot-api/internal/repository"
+	"catalog-bot-api/pkg/postgres"
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -132,4 +134,35 @@ func GetOrderHandler(c *fiber.Ctx) error {
 	response := repository.GetOrder(id)
 
 	return c.JSON(response)
+}
+
+func GetOrdersByUser(c *fiber.Ctx) error {
+    userIdStr := c.Query("userId")
+    userId, err := strconv.Atoi(userIdStr)
+    if err != nil {
+        return c.Status(400).JSON(fiber.Map{"error": "Invalid userId"})
+    }
+
+    var orders []models.Order
+    if err := postgres.DB.Preload("Units").Where("user_id = ?", userId).Find(&orders).Error; err != nil {
+        return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch orders"})
+    }
+
+    var response []models.OrderListResponse
+    for _, order := range orders {
+        units := make([]models.UnitResponse, len(order.Units))
+        for i, u := range order.Units {
+            units[i] = models.UnitResponse{
+                ID:    u.ID,
+                Title: u.Title,
+            }
+        }
+
+        response = append(response, models.OrderListResponse{
+            OrderID: order.ID,
+            Units:   units,
+        })
+    }
+
+    return c.JSON(response)
 }

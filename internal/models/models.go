@@ -42,6 +42,7 @@ type (
 	Order struct {
 		gorm.Model
 		UserId int
+		Units  []Unit `gorm:"foreignKey:OrderId"`
 	}
 
 	Unit struct {

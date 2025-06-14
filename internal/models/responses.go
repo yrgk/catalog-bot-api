@@ -45,3 +45,13 @@ type (
 		Units []Unit `json:"units"`
 	}
 )
+
+type UnitResponse struct {
+    ID    uint   `json:"ID"`
+    Title string `json:"Title"`
+}
+
+type OrderListResponse struct {
+    OrderID uint           `json:"OrderId"`
+    Units   []UnitResponse `json:"Units"`
+}

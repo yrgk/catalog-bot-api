@@ -155,11 +155,13 @@ func GetOrdersByUser(c *fiber.Ctx) error {
             units[i] = models.UnitResponse{
                 ID:    u.ID,
                 Title: u.Title,
+				Price: u.Price,
             }
         }
 
         response = append(response, models.OrderListResponse{
             OrderID: order.ID,
+			State: order.State,
             Units:   units,
         })
     }

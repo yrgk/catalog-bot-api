@@ -47,11 +47,13 @@ type (
 )
 
 type UnitResponse struct {
-    ID    uint   `json:"ID"`
-    Title string `json:"Title"`
+	ID    uint   `json:"ID"`
+	Title string `json:"Title"`
+	Price int    `json:"price"`
 }
 
 type OrderListResponse struct {
-    OrderID uint           `json:"OrderId"`
-    Units   []UnitResponse `json:"Units"`
+	OrderID uint           `json:"OrderId"`
+	State   string         `json:"state"`
+	Units   []UnitResponse `json:"Units"`
 }

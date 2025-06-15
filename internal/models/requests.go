@@ -16,8 +16,13 @@ type (
 		TelegramUserID int    `json:"telegram_user_id"`
 	}
 
+	UnitStruct struct {
+		Title string `json:"title"`
+		Price int    `json:"price"`
+	}
+
 	CreateOrderRequest struct {
-		UserId int      `json:"user_id"`
-		Titles []string `json:"titles"`
+		UserId   int          `json:"user_id"`
+		DataList []UnitStruct `json:"data_list"`
 	}
 )

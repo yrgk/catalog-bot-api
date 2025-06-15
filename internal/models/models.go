@@ -42,12 +42,14 @@ type (
 	Order struct {
 		gorm.Model
 		UserId int
+		State  string `gorm:"default:'В обработке'"`
 		Units  []Unit `gorm:"foreignKey:OrderId"`
 	}
 
 	Unit struct {
 		gorm.Model
 		Title   string
+		Price   int
 		OrderId int
 	}
 )

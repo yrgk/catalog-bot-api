@@ -137,34 +137,37 @@ func GetOrderHandler(c *fiber.Ctx) error {
 }
 
 func GetOrdersByUser(c *fiber.Ctx) error {
-    userIdStr := c.Query("userId")
-    userId, err := strconv.Atoi(userIdStr)
-    if err != nil {
-        return c.Status(400).JSON(fiber.Map{"error": "Invalid userId"})
-    }
+	userIdStr := c.Query("userId")
+	userId, err := strconv.Atoi(userIdStr)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid userId"})
+	}
 
-    var orders []models.Order
-    if err := postgres.DB.Preload("Units").Where("user_id = ?", userId).Find(&orders).Error; err != nil {
-        return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch orders"})
-    }
+	var orders []models.Order
+	// if err := postgres.DB.Preload("Units").Where("user_id = ?", userId).Find(&orders).Error; err != nil {
+	// 	return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch orders"})
+	// }
+	if err := postgres.DB.Raw("SELECT * FROM orders WHERE user_id = ?", userId).Find(&orders).Error; err != nil {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
 
-    var response []models.OrderListResponse
-    for _, order := range orders {
-        units := make([]models.UnitResponse, len(order.Units))
-        for i, u := range order.Units {
-            units[i] = models.UnitResponse{
-                ID:    u.ID,
-                Title: u.Title,
+	var response []models.OrderListResponse
+	for _, order := range orders {
+		units := make([]models.UnitResponse, len(order.Units))
+		for i, u := range order.Units {
+			units[i] = models.UnitResponse{
+				ID:    u.ID,
+				Title: u.Title,
 				Price: u.Price,
-            }
-        }
+			}
+		}
 
-        response = append(response, models.OrderListResponse{
-            OrderID: order.ID,
-			State: order.State,
-            Units:   units,
-        })
-    }
+		response = append(response, models.OrderListResponse{
+			OrderID: order.ID,
+			State:   order.State,
+			Units:   units,
+		})
+	}
 
-    return c.JSON(response)
+	return c.JSON(response)
 }

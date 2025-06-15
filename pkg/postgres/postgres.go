@@ -21,8 +21,7 @@ func ConnectDb() {
 		models.Shop{},
 		models.Order{},
 		models.Unit{},
-		// models.CatalogItem{},
-		// models.Banner{},
+		models.CatalogItem{},
 	)
 
 	DB = db

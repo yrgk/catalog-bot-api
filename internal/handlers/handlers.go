@@ -144,11 +144,8 @@ func GetOrdersByUser(c *fiber.Ctx) error {
 	}
 
 	var orders []models.Order
-	// if err := postgres.DB.Preload("Units").Where("user_id = ?", userId).Find(&orders).Error; err != nil {
-	// 	return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch orders"})
-	// }
-	if err := postgres.DB.Raw("SELECT * FROM orders WHERE user_id = ?", userId).Find(&orders).Error; err != nil {
-		return c.SendStatus(fiber.StatusBadRequest)
+	if err := postgres.DB.Preload("Units").Where("user_id = ?", userId).Find(&orders).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to fetch orders"})
 	}
 
 	var response []models.OrderListResponse

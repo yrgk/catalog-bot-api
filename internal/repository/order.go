@@ -59,7 +59,7 @@ func sendMessagesToTelegram(botToken string, chatID int64, messages []models.Uni
 	// messageText := prefix + strings.Join(messages, "\n")
 	messageText := prefix // + strings.Join(messages, "\n")
 	for _, message := range messages {
-		messageText += fmt.Sprintf("%s | %d", message.Title, message.Price)
+		messageText += fmt.Sprintf("%s | %d\n", message.Title, message.Price)
 	}
 
 	msg := tgbotapi.NewMessage(chatID, messageText)

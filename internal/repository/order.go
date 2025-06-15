@@ -27,7 +27,7 @@ func CreateOrder(body models.CreateOrderRequest) error {
 	}
 	postgres.DB.Create(&units)
 
-	if err := sendMessagesToTelegram("7384309625:AAEafLrMt8MpZHAvfmvj6U3b0AZ8X3YTzs0", int64(body.UserId), body.DataList, int(order.ID)); err != nil {
+	if err := sendMessagesToTelegram("7384309625:AAGQhUgjJ_caTtyfbiB88kDAquGJWPZrOuw", int64(body.UserId), body.DataList, int(order.ID)); err != nil {
 		return err
 	}
 
